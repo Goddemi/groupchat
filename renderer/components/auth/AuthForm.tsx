@@ -3,7 +3,7 @@ import GoBackButton from "./formElement/GoBackButton";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
-const AuthForm = ({ setLoginState }) => {
+const AuthForm = ({ setLoginState }: any) => {
   const [formChanger, setFormChanger] = useState({
     loginForm: true,
     signupForm: false,
