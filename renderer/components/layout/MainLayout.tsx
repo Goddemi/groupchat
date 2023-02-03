@@ -2,8 +2,7 @@ const MainLayout = (props: React.PropsWithChildren) => {
   return (
     <>
       <main>{props.children}</main>
-
-      {/* 통신 성공 실패값 여기에다 해주면 좋을듯. */}
+      {/* 통신 성공 실패 Notification 전역상태로 여기로 이동 */}
     </>
   );
 };
