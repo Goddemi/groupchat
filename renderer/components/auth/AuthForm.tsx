@@ -3,7 +3,11 @@ import GoBackButton from "./formElement/GoBackButton";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
-const AuthForm = ({ setLoginState }: any) => {
+export interface SetLoginState {
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AuthForm = ({ setLoginState }: SetLoginState) => {
   const [formChanger, setFormChanger] = useState({
     loginForm: true,
     signupForm: false,

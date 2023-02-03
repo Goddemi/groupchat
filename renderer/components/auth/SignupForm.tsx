@@ -3,7 +3,11 @@ import Notification from "../notification/Notification";
 import { signupRequest } from "./api/auth";
 import InputForm from "./formElement/InputForm";
 
-const SignupForm = ({ goToLogin }: any) => {
+interface Props {
+  goToLogin: () => void;
+}
+
+const SignupForm = ({ goToLogin }: Props) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordCheckRef = useRef<HTMLInputElement>(null);

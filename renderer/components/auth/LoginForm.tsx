@@ -2,8 +2,12 @@ import { useState, useRef } from "react";
 import { loginRequest } from "./api/auth";
 import InputForm from "./formElement/InputForm";
 import Notification from "../notification/Notification";
+interface Props {
+  goToSignup: () => void;
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const LoginForm = ({ goToSignup, setLoginState }: any) => {
+const LoginForm = ({ goToSignup, setLoginState }: Props) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -16,7 +20,7 @@ const LoginForm = ({ goToSignup, setLoginState }: any) => {
     const password = passwordRef.current?.value;
 
     const response = await loginRequest(email, password);
-    const { uid, message } = response;
+    const message = response?.message;
     setLoginRequestResult(message);
 
     message === "로그인 성공" && setLoginState(true);
