@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import AuthForm from "../components/auth/AuthForm";
-// 여기서 로그인 상태값을 가져온다.
+import MainLayout from "../components/main/MainLayout";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { getUserList } from "../components/auth/api/userList";
+import axios from "axios";
 
-function Home() {
-  const [loginState, setLoginState] = useState(false);
+function Home({ data }: any) {
+  const loginUser = useSelector((state: RootState) => state.login.loginUser);
+  console.log(data);
+
+  let userArrayList: string[] = [];
+
+  for (let ele in data) {
+    userArrayList = [...userArrayList, data[ele].userEmail];
+  }
+
+  console.log(userArrayList);
 
   return (
     <>
@@ -13,14 +25,12 @@ function Home() {
         <title>Chat application with Nextron</title>
       </Head>
       <div className="flex flex-col justify-center items-center">
-        {loginState ? (
+        {loginUser ? (
           <div className="mt-1 w-full flex-wrap flex justify-center">
-            <Link href="/next">
-              <a className="btn-blue">Go to next page</a>
-            </Link>
+            <MainLayout userArrayList={userArrayList} />
           </div>
         ) : (
-          <AuthForm setLoginState={setLoginState} />
+          <AuthForm />
         )}
       </div>
     </>
@@ -28,3 +38,11 @@ function Home() {
 }
 
 export default Home;
+
+export async function getServerSideProps() {
+  const { data } = await axios(
+    "https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/user.json"
+  );
+
+  return { props: { data } };
+}

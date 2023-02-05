@@ -2,12 +2,16 @@ import { useState, useRef } from "react";
 import { loginRequest } from "./api/auth";
 import InputForm from "./formElement/InputForm";
 import Notification from "../notification/Notification";
+import { useDispatch } from "react-redux";
+import { setLoginUser } from "../../store/auth/loginUser";
+import axios from "axios";
 interface Props {
   goToSignup: () => void;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LoginForm = ({ goToSignup, setLoginState }: Props) => {
+const LoginForm = ({ goToSignup }: Props) => {
+  const dispatch = useDispatch();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -20,10 +24,11 @@ const LoginForm = ({ goToSignup, setLoginState }: Props) => {
     const password = passwordRef.current?.value;
 
     const response = await loginRequest(email, password);
-    const message = response?.message;
+
+    const { message, userEmail }: any = response;
     setLoginRequestResult(message);
 
-    message === "로그인 성공" && setLoginState(true);
+    message === "로그인 성공" && dispatch(setLoginUser(userEmail));
   };
 
   return (

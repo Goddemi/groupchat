@@ -1,13 +1,10 @@
 import { useState } from "react";
+import { auth } from "./api/auth";
 import GoBackButton from "./formElement/GoBackButton";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
-export interface SetLoginState {
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const AuthForm = ({ setLoginState }: SetLoginState) => {
+const AuthForm = () => {
   const [formChanger, setFormChanger] = useState({
     loginForm: true,
     signupForm: false,
@@ -33,9 +30,7 @@ const AuthForm = ({ setLoginState }: SetLoginState) => {
     <div className="relative p-11 bg-white text-black">
       <div>{loginForm || <GoBackButton goToLogin={goToLogin} />}</div>
       <div className="">
-        {loginForm && (
-          <LoginForm goToSignup={goToSignup} setLoginState={setLoginState} />
-        )}
+        {loginForm && <LoginForm goToSignup={goToSignup} />}
         {signupForm && <SignupForm goToLogin={goToLogin} />}
       </div>
     </div>

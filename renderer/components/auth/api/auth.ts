@@ -4,6 +4,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { addUserList } from "./userList";
 
 export const auth = getAuth(app);
 
@@ -29,6 +30,8 @@ export const signupRequest = async (
         email,
         password
       );
+      addUserList("/api/user", email);
+
       return "회원가입 성공";
     } catch (error: any) {
       const errorCode = await error.code;
@@ -42,19 +45,17 @@ export const loginRequest = async (
   password: AuthInputType
 ) => {
   if (!email || !password) {
-    const result = { message: "빈칸을 입력해 주세요" };
+    const result = { userEmail: "", message: "빈칸을 입력해 주세요" };
     return result;
   }
 
   if (email && password) {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
-      //사용자 정보 확인, 이름이나 이메일 이메일을 아이디로 쓰면 될듯. 채팅방에서
-      const result = { message: "로그인 성공" };
+      const result = { userEmail: user.email, message: "로그인 성공" };
       return result;
     } catch (error: any) {
-      const result = { message: error.code };
+      const result = { userEmail: "", message: error.code };
       return result;
     }
   }
