@@ -8,6 +8,5 @@ export const addUserList = (url: string, userEmail: string) => {
 
 export const getUserList = (url: string) => {
   const result = axios(url);
-  console.log(result);
   return result;
 };

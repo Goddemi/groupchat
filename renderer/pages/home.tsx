@@ -9,15 +9,12 @@ import axios from "axios";
 
 function Home({ data }: any) {
   const loginUser = useSelector((state: RootState) => state.login.loginUser);
-  console.log(data);
 
   let userArrayList: string[] = [];
 
   for (let ele in data) {
     userArrayList = [...userArrayList, data[ele].userEmail];
   }
-
-  console.log(userArrayList);
 
   return (
     <>

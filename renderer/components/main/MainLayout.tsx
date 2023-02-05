@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import GroupChat from "../chat/GroupChat";
+import PersonalChat from "../chat/PersonalChat";
 import Nav from "../nav/Nav";
 import UserList from "../user/UserList";
 
@@ -12,12 +14,13 @@ const MainLayout = ({ userArrayList }: Props) => {
     personalChat: false,
     groupChat: false,
   });
+
   return (
     <div>
-      <Nav />
+      <Nav setMenuState={setMenuState} />
       {menuState.userList && <UserList userArrayList={userArrayList} />}
-      {/* {menuState.userList && <UserList />} */}
-      {/* {menuState.userList && <UserList />} */}
+      {menuState.userList && <PersonalChat />}
+      {menuState.userList && <GroupChat />}
     </div>
   );
 };

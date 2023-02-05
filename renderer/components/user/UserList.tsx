@@ -22,8 +22,9 @@ const UserList = ({ userArrayList }: Props) => {
   return (
     <div className="p-3 border border-black border-solid">
       <input
-        className="w-full mb-5 bg-slate-200 border border-black outline-none rounded-md"
+        className="w-full h-8 mb-5 p-1 bg-slate-200 border rounded-md"
         onChange={searchHandler}
+        placeholder="user 검색하기"
       />
 
       <ul>
