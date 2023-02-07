@@ -27,7 +27,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="relative p-11 bg-white text-black">
+    <div className="w-full flex-wrap flex justify-center items-center mt-1 p-11 bg-white text-black">
       <div>{loginForm || <GoBackButton goToLogin={goToLogin} />}</div>
       <div className="">
         {loginForm && <LoginForm goToSignup={goToSignup} />}

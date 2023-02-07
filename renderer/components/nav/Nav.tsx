@@ -1,35 +1,20 @@
+import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
 const Nav = ({ setMenuState }: any) => {
-  const gotoUserList = () => {
-    setMenuState({ userList: true, personalChat: false, groupChat: false });
-  };
-
-  const gotoPersonalChat = () => {
-    setMenuState({ userList: false, personalChat: true, groupChat: false });
-  };
-
-  const gotoGroupChat = () => {
-    setMenuState({ userList: false, personalChat: false, groupChat: true });
-  };
+  const loginUser = useSelector((state: RootState) => state.login.loginUser);
 
   return (
-    <div className="flex">
-      <div
-        className="mx-1 my-2 p-3 border border-black border-solid cursor-pointer"
-        onClick={gotoUserList}
-      >
-        UserList
+    <div className="flex justify-center">
+      <div className="my-2 p-3 border border-black border-solid cursor-pointer">
+        <Link href={"/"}>UserList</Link>
       </div>
-      <div
-        className="mx-1 my-2 p-3 border border-black border-solid cursor-pointer"
-        onClick={gotoPersonalChat}
-      >
-        1:1 Chat
+      <div className="mx-1 my-2 p-3 border border-black border-solid cursor-pointer">
+        <Link href={`/personal/${loginUser}`}>1:1 Chat</Link>
       </div>
-      <div
-        className="mx-1 my-2 p-3 border border-black border-solid cursor-pointer"
-        onClick={gotoGroupChat}
-      >
-        Group Chat
+      <div className="my-2 p-3 border border-black border-solid cursor-pointer">
+        <Link href={`/group/${loginUser}`}>Group Chat</Link>
       </div>
     </div>
   );
