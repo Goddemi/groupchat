@@ -4,7 +4,6 @@ import AuthForm from "../components/auth/AuthForm";
 import MainLayout from "../components/main/MainLayout";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { getUserList } from "../components/auth/api/userList";
 import axios from "axios";
 
 function Home({ data }: any) {
@@ -21,7 +20,7 @@ function Home({ data }: any) {
       <Head>
         <title>Chat application with Nextron</title>
       </Head>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center font-sans">
         {loginUser ? (
           <div className="mt-1 w-full flex-wrap flex justify-center">
             <MainLayout userArrayList={userArrayList} />

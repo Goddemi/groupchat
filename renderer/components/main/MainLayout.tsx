@@ -19,8 +19,8 @@ const MainLayout = ({ userArrayList }: Props) => {
     <div>
       <Nav setMenuState={setMenuState} />
       {menuState.userList && <UserList userArrayList={userArrayList} />}
-      {menuState.userList && <PersonalChat />}
-      {menuState.userList && <GroupChat />}
+      {menuState.personalChat && <PersonalChat />}
+      {menuState.groupChat && <GroupChat />}
     </div>
   );
 };
