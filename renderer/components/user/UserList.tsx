@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getUserList } from "../auth/api/userList";
-import List from "../list/List";
+import List from "../elements/List";
+import SearchUser from "./search/SearchUser";
 
 interface Props {
   userArrayList: string[];
@@ -8,11 +8,6 @@ interface Props {
 
 const UserList = ({ userArrayList }: Props) => {
   const [searchUser, setSearchUser] = useState<string | undefined>();
-
-  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputData = e.target.value;
-    setSearchUser(inputData);
-  };
 
   if (searchUser) {
     userArrayList = userArrayList.filter((ele) =>
@@ -22,12 +17,7 @@ const UserList = ({ userArrayList }: Props) => {
 
   return (
     <div className="p-3 border border-black border-solid">
-      <input
-        className="w-full h-8 mb-5 p-1 bg-slate-200 border rounded-md"
-        onChange={searchHandler}
-        placeholder="user 검색하기"
-      />
-
+      <SearchUser setSearchUser={setSearchUser} />
       <ul>
         {userArrayList.map((user) => {
           return <List user={user} />;

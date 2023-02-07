@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import List from "../../../components/list/List";
+import List from "../../../components/elements/List";
 
 const PersonalChatPage = (props) => {
   const router = useRouter();

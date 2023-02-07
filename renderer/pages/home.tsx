@@ -22,6 +22,8 @@ function Home({ data }: any) {
   );
 }
 
+//데이터를 잘못생각했다.
+
 export default Home;
 
 export async function getServerSideProps() {
