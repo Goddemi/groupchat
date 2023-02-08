@@ -1,5 +1,5 @@
-const Message = ({ data, target }) => {
-  const { fromUser, message, sendTime } = data;
+const Message = ({ data }) => {
+  const { message, sendTime } = data;
 
   const originDate = new Date(sendTime);
   const date = originDate.toLocaleDateString();

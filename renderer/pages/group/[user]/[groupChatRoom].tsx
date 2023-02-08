@@ -7,15 +7,14 @@ import ChatInput from "../../../components/chat/chatElement/ChatInput";
 import { RootState } from "../../../store/store";
 import { GetServerSideProps } from "next";
 import { emailFormatter } from "../../../lib/emailFomatter";
+import InviteForm from "../../../components/chat/groupChat/InviteForm";
 
 const GroupChatRoomPage = (props) => {
-  const [target, chatData] = [props.target, props.personalChatContent];
-
-  const [newChatData, setNewChatData] = useState(chatData);
+  const { roomId, members, messages } = props;
+  const [newChatData, setNewChatData] = useState(messages);
 
   const user = useSelector((state: RootState) => state.login.loginUser);
   const fromUser = emailFormatter(user);
-  const toUser = target;
 
   const sendTime = new Date().getTime();
 
@@ -29,7 +28,7 @@ const GroupChatRoomPage = (props) => {
 
     const data = {
       fromUser,
-      toUser,
+      roomId,
       sendTime,
       message: inputValue,
     };
@@ -44,8 +43,11 @@ const GroupChatRoomPage = (props) => {
 
   return (
     <div>
-      <span className="block text-center my-3">Chat with '{target}'</span>
-      <ChatContent chatData={newChatData} target={target} />
+      <span className="block text-center my-3">Chat in '{roomId}'</span>
+
+      <InviteForm roomId={roomId} members={members} />
+
+      <ChatContent chatData={newChatData} fromUser={fromUser} />
       <form onSubmit={submitHandler} className="text-center">
         <ChatInput inputValue={inputValue} setInputValue={setInputValue} />
       </form>
@@ -64,10 +66,21 @@ export const getServerSideProps = async (context) => {
 
   const roomData = response.data;
 
-  const key = Object.keys(roomData)[0];
-  const groupChatContent = roomData[key];
+  // const key = Object.keys(roomData)[0];
+  // const groupChatContent = roomData[key];
 
-  const { members, messages } = groupChatContent;
+  const [members, messages] = [[], []];
 
-  return { props: { members, messages } };
+  for (let key in roomData.members) {
+    members.push(roomData.members[key]);
+  }
+
+  for (let key in roomData.messages) {
+    members.push(roomData.messages[key]);
+  }
+
+  return { props: { roomId, members, messages } };
 };
+
+//저쪽에서 보낸건 실시간으로 어떻게 확인하지.
+//getData가 바뀔때마다 다시 요청하게 한다.

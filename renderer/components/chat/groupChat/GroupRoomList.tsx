@@ -3,7 +3,7 @@ import List from "../../../components/elements/List";
 const GroupRoomList = ({ goToChatRoom, groupChatList }) => {
   return (
     <div className="my-7">
-      <div className="my-3 text-center">방 리스트</div>
+      <div className="my-3 text-center">대화중인 방 리스트</div>
       {groupChatList?.map((targetRoomId) => {
         return (
           <div

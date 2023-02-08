@@ -1,6 +1,6 @@
 import Message from "./Message";
 
-const ChatContent = ({ chatData, target }) => {
+const ChatContent = ({ chatData, fromUser }) => {
   return (
     <>
       <ul className=" h-screen bg-gray-200 p-3">
@@ -8,11 +8,11 @@ const ChatContent = ({ chatData, target }) => {
           return (
             <div
               className={`flex ${
-                target !== data.fromUser ? `justify-end` : ``
+                fromUser === data.fromUser ? `justify-end` : ``
               }`}
               key={data.sendTime}
             >
-              <Message data={data} target={target} />
+              <Message data={data} />
             </div>
           );
         })}

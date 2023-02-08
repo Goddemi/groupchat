@@ -13,6 +13,7 @@ const PersonalChatPage = (props) => {
 
   return (
     <div>
+      <div className="my-3 text-center">대화중인 방 리스트</div>
       {personalChatList.map((targetUser) => {
         return (
           <div

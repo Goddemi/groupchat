@@ -45,7 +45,7 @@ const PersonalChatRoomPage = (props) => {
   return (
     <div>
       <span className="block text-center my-3">Chat with '{target}'</span>
-      <ChatContent chatData={newChatData} target={target} />
+      <ChatContent chatData={newChatData} fromUser={fromUser} />
       <form onSubmit={submitHandler} className="text-center">
         <ChatInput inputValue={inputValue} setInputValue={setInputValue} />
       </form>

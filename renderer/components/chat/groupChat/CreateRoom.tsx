@@ -14,6 +14,11 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
   const makeRoomHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!createdRoomId) {
+      alert("방 제목을 입력해주세요");
+      return;
+    }
+
     const existedNameCheckResult = await roomIdExistedCheckHandler();
     postNewGroupChat(existedNameCheckResult, createdRoomId);
 
@@ -44,9 +49,9 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
         data
       );
 
-      const content = { members: { host: user } };
+      const content = { host: user };
       const postToGroupChatContent = await axios.post(
-        `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${createdRoomId}.json`,
+        `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${createdRoomId}/members.json`,
         content
       );
 
