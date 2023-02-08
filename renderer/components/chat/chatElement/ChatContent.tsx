@@ -10,6 +10,7 @@ const ChatContent = ({ chatData, target }) => {
               className={`flex ${
                 target !== data.fromUser ? `justify-end` : ``
               }`}
+              key={data.sendTime}
             >
               <Message data={data} target={target} />
             </div>

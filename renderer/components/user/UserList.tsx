@@ -20,7 +20,7 @@ const UserList = ({ userArrayList }: Props) => {
       <SearchUser setSearchUser={setSearchUser} />
       <ul>
         {userArrayList.map((user) => {
-          return <List user={user} />;
+          return <List user={user} key={user} />;
         })}
       </ul>
     </div>

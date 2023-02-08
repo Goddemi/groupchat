@@ -8,7 +8,7 @@ import { RootState } from "../../../store/store";
 import { GetServerSideProps } from "next";
 import { emailFormatter } from "../../../lib/emailFomatter";
 
-const ChatRoomPage = (props) => {
+const PersonalChatRoomPage = (props) => {
   const [target, chatData] = [props.target, props.personalChatContent];
 
   const [newChatData, setNewChatData] = useState(chatData);
@@ -19,21 +19,27 @@ const ChatRoomPage = (props) => {
 
   const sendTime = new Date().getTime();
 
-  const [inputValue, setInputValue] = useState<string | undefined>();
+  const [inputValue, setInputValue] = useState<string | undefined>("");
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!inputValue) {
+      return;
+    }
+
     const data = {
       fromUser,
       toUser,
       sendTime,
       message: inputValue,
     };
-
-    sendMessage(data);
-    setNewChatData([...newChatData, data]);
-
-    setInputValue("");
+    try {
+      await sendMessage(data);
+      setNewChatData([...newChatData, data]);
+      setInputValue("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -47,7 +53,7 @@ const ChatRoomPage = (props) => {
   );
 };
 
-export default ChatRoomPage;
+export default PersonalChatRoomPage;
 
 export const getServerSideProps = async (context) => {
   const user = context.params.user.replace(".", "");
@@ -58,6 +64,10 @@ export const getServerSideProps = async (context) => {
   );
   const messages = response.data;
   const personalChatContent = [];
+
+  if (!messages) {
+    return { props: { target, personalChatContent } };
+  }
 
   for (let key in messages) {
     personalChatContent.push(messages[key]);

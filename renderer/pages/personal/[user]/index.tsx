@@ -21,7 +21,7 @@ const PersonalChatPage = (props) => {
               goToChatRoom(targetUser);
             }}
           >
-            <List user={targetUser} />
+            <List targetId={targetUser} />
           </div>
         );
       })}
