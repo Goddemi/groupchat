@@ -14,13 +14,11 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
   const makeRoomHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = { roomId: createdRoomId };
-    const existedNameResult = await roomIdExistedCheckHandler();
-    postNewGroupChat(existedNameResult, data);
+    const existedNameCheckResult = await roomIdExistedCheckHandler();
+    postNewGroupChat(existedNameCheckResult, createdRoomId);
 
     return;
   };
-  //어떤 함수를 실행하고 그 다음에 다른 함수를 실행하는.
 
   const roomIdExistedCheckHandler = async () => {
     const getResult = await axios(
@@ -37,15 +35,22 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
     return false;
   };
 
-  const postNewGroupChat = async (existedNameResult, data) => {
-    console.log(existedNameResult);
-    if (!existedNameResult) {
-      const postResult = await axios.post(
+  const postNewGroupChat = async (existedNameCheckResult, createdRoomId) => {
+    const data = { roomId: createdRoomId };
+
+    if (!existedNameCheckResult) {
+      const postToGroupChatList = await axios.post(
         `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat-list/${user}.json`,
         data
       );
 
-      goToChatRoom();
+      const content = { members: { host: user } };
+      const postToGroupChatContent = await axios.post(
+        `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${createdRoomId}.json`,
+        content
+      );
+
+      goToChatRoom(createdRoomId);
     }
   };
 
