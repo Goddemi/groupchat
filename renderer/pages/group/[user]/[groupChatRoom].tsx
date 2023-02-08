@@ -1,5 +1,10 @@
 const GroupChatPage = () => {
-  return <div></div>;
+  return <div>ㅗㅑ</div>;
 };
 
 export default GroupChatPage;
+
+export const getServerSideProps = async (context) => {
+  console.log(context);
+  return { props: {} };
+};

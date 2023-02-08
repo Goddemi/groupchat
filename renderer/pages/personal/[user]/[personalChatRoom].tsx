@@ -57,7 +57,7 @@ export default PersonalChatRoomPage;
 
 export const getServerSideProps = async (context) => {
   const user = context.params.user.replace(".", "");
-  const target = context.params?.chatRoom;
+  const target = context.params?.personalChatRoom;
 
   const response = await axios(
     `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat/${user}/${target}.json`
@@ -65,9 +65,9 @@ export const getServerSideProps = async (context) => {
   const messages = response.data;
   const personalChatContent = [];
 
-  if (!messages) {
-    return { props: { target, personalChatContent } };
-  }
+  // if (!messages) {
+  //   return { props: { target, personalChatContent } };
+  // }
 
   for (let key in messages) {
     personalChatContent.push(messages[key]);

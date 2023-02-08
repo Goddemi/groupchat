@@ -7,16 +7,31 @@ const List = ({ targetId }: { targetId: string }) => {
   const loginData = useSelector((state: RootState) => state.login.loginUser);
   const loginUser = loginData && emailFormatter(loginData);
 
-  const targetUser = emailFormatter(targetId);
+  if (!targetId) {
+    return <div>리스트 없음</div>;
+  }
 
-  const path = `/personal/${loginUser}/${targetUser}`;
+  //개인대화일 경우
+  if (targetId.includes("@")) {
+    const targetUser = emailFormatter(targetId);
+    const path = `/personal/${loginUser}/${targetUser}`;
+
+    return (
+      <Link href={path}>
+        <li className="list-none mb-4 p-4 bg-slate-100 border cursor-pointer">
+          {`${targetId}님과 대화하기`}
+        </li>
+      </Link>
+    );
+  }
+
+  //그룹대화일 경우
+  const path = `/group/${loginUser}/${targetId}`;
 
   return (
     <Link href={path}>
       <li className="list-none mb-4 p-4 bg-slate-100 border cursor-pointer">
-        {targetId.includes("@")
-          ? `${targetId}님과 대화하기`
-          : `방 제목 : ${targetId}`}
+        {`방 제목 : ${targetId}`}
       </li>
     </Link>
   );
