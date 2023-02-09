@@ -7,10 +7,6 @@ const List = ({ targetId }: { targetId: string }) => {
   const loginData = useSelector((state: RootState) => state.login.loginUser);
   const loginUser = loginData && emailFormatter(loginData);
 
-  if (!targetId) {
-    return <div>리스트 없음</div>;
-  }
-
   //개인대화일 경우
   if (targetId.includes("@")) {
     const targetUser = emailFormatter(targetId);

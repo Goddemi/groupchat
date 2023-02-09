@@ -7,10 +7,11 @@ import ChatInput from "../../../components/chat/chatElement/ChatInput";
 import { RootState } from "../../../store/store";
 import { GetServerSideProps } from "next";
 import { emailFormatter } from "../../../lib/emailFomatter";
-import InviteForm from "../../../components/chat/groupChat/InviteForm";
+import InviteForm from "../../../components/chat/groupChat/invite/InviteForm";
 
 const GroupChatRoomPage = (props) => {
   const { roomId, members, messages } = props;
+
   const [newChatData, setNewChatData] = useState(messages);
 
   const user = useSelector((state: RootState) => state.login.loginUser);
@@ -44,9 +45,7 @@ const GroupChatRoomPage = (props) => {
   return (
     <div>
       <span className="block text-center my-3">Chat in '{roomId}'</span>
-
       <InviteForm roomId={roomId} members={members} />
-
       <ChatContent chatData={newChatData} fromUser={fromUser} />
       <form onSubmit={submitHandler} className="text-center">
         <ChatInput inputValue={inputValue} setInputValue={setInputValue} />
@@ -66,8 +65,7 @@ export const getServerSideProps = async (context) => {
 
   const roomData = response.data;
 
-  // const key = Object.keys(roomData)[0];
-  // const groupChatContent = roomData[key];
+  console.log(roomData);
 
   const [members, messages] = [[], []];
 
@@ -76,7 +74,7 @@ export const getServerSideProps = async (context) => {
   }
 
   for (let key in roomData.messages) {
-    members.push(roomData.messages[key]);
+    messages.push(roomData.messages[key]);
   }
 
   return { props: { roomId, members, messages } };

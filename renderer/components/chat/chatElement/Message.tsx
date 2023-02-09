@@ -1,5 +1,5 @@
 const Message = ({ data }) => {
-  const { message, sendTime } = data;
+  const { fromUser, message, sendTime } = data;
 
   const originDate = new Date(sendTime);
   const date = originDate.toLocaleDateString();
@@ -13,6 +13,8 @@ const Message = ({ data }) => {
       <span className="text-xs">
         {date} {time}
       </span>
+
+      <span className="text-xs">- {fromUser}</span>
     </li>
   );
 };

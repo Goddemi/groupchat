@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 import UserList from "../components/user/UserList";
+import { getUserListWithArray } from "../components/auth/api/userList";
 
-function Home({ data }: any) {
-  let userArrayList: string[] = [];
+interface Props {
+  data: string[];
+}
 
-  for (let ele in data) {
-    userArrayList = [...userArrayList, data[ele].userEmail];
-  }
+function Home({ data }: Props) {
+  const userArrayList = data;
 
   return (
     <>
@@ -22,14 +23,10 @@ function Home({ data }: any) {
   );
 }
 
-//데이터를 잘못생각했다.
-
 export default Home;
 
 export async function getServerSideProps() {
-  const { data } = await axios(
-    "https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/user.json"
-  );
+  const data = await getUserListWithArray();
 
   return { props: { data } };
 }

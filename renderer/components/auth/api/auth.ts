@@ -4,7 +4,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { addUserList } from "./userList";
+import { postUserList } from "./userList";
 
 export const auth = getAuth(app);
 
@@ -30,7 +30,7 @@ export const signupRequest = async (
         email,
         password
       );
-      addUserList("/api/user", email);
+      postUserList("/api/user", email);
 
       return "회원가입 성공";
     } catch (error: any) {

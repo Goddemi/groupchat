@@ -1,19 +1,17 @@
-import { getUserList } from "./../../components/auth/api/userList";
+import { getUserListWithArray } from "./../../components/auth/api/userList";
+import { postUserList } from "../../components/auth/api/userList";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { addUserList } from "../../components/auth/api/userList";
-import axios from "axios";
+
+import { USER_CONFIG } from "../../config/config";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const userConfig =
-    "https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/user.json";
-
   if (req.method === "POST") {
     try {
       const userEmail = req.body.userEmail;
-      const result = await addUserList(userConfig, userEmail);
+      const result = await postUserList(USER_CONFIG, userEmail);
       res.send("add user list success");
     } catch (error) {
       res.send("can't add user list");
@@ -22,7 +20,7 @@ export default async function handler(
 
   if (req.method === "GET") {
     try {
-      const userList = await getUserList(userConfig);
+      const userList = await getUserListWithArray();
       res.send(userList);
     } catch (error) {
       res.send("can't get user list");

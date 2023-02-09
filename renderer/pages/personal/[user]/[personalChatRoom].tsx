@@ -65,10 +65,6 @@ export const getServerSideProps = async (context) => {
   const messages = response.data;
   const personalChatContent = [];
 
-  // if (!messages) {
-  //   return { props: { target, personalChatContent } };
-  // }
-
   for (let key in messages) {
     personalChatContent.push(messages[key]);
   }
