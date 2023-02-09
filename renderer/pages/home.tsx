@@ -1,15 +1,17 @@
-import React, { useState } from "react";
 import Head from "next/head";
-import axios from "axios";
 import UserList from "../components/user/UserList";
 import { getUserListWithArray } from "../components/auth/api/userList";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 interface Props {
   data: string[];
 }
 
 function Home({ data }: Props) {
+  const loginUser = useSelector((state: RootState) => state.login.loginUser);
   const userArrayList = data;
+
+  const userListExceptMe = userArrayList.filter((ele) => ele !== loginUser);
 
   return (
     <>
@@ -17,7 +19,7 @@ function Home({ data }: Props) {
         <title>Chat application with Nextron</title>
       </Head>
       <div className="flex flex-col justify-center items-center">
-        <UserList userArrayList={userArrayList} />
+        <UserList userArrayList={userListExceptMe} />
       </div>
     </>
   );
