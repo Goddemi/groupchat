@@ -6,7 +6,7 @@ import {
 } from "../../../components/chat/api/firebaseApi";
 import { getDataOnce } from "../../../lib/firebaseLib";
 import { GetServerSidePropsContext } from "next";
-import { MessageType } from "../../../type/message";
+import { MessageType } from "../../../type/chat";
 interface Props {
   roomId: string;
   fromUser: string;

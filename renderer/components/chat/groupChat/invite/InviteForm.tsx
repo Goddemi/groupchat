@@ -6,6 +6,7 @@ import {
   postMemberListToRoomDatabase,
 } from "./api";
 import { MemberType } from "../../../../type/chat";
+import { getDataOnce } from "../../../../lib/firebaseLib";
 interface Props {
   roomId: string;
   members: MemberType[];
@@ -23,10 +24,19 @@ const InviteForm = ({ roomId, members }: Props) => {
   const inviteHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const memberList = members.map((ele) => Object.values(ele)[0]);
+    let existedMemberArray: (string | unknown)[] = [];
+    const existedMember = Object.values(
+      (await getDataOnce(`group-chat/${roomId}/members`)).val()
+    );
+
+    for (let member of existedMember) {
+      const key = Object.keys(member as any)[0];
+      existedMemberArray = [...existedMemberArray, (member as any)[key]];
+    }
+
     const formattedId = emailFormatter(invitePersonId);
 
-    if (memberList.includes(formattedId)) {
+    if (existedMemberArray.includes(formattedId)) {
       alert("중복 아이디 불가");
       return;
     }
@@ -72,7 +82,7 @@ const InviteForm = ({ roomId, members }: Props) => {
             onChange={inviteInputHandler}
             value={invitePersonId}
           />
-          <button className="mx-2">초대하기</button>
+          <button className="mx-2">초대하기(이메일 입력)</button>
         </form>
       </div>
     </>

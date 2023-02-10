@@ -1,7 +1,7 @@
 import { child, get, onValue, push, ref } from "firebase/database";
 import { db } from "../firebase";
 import { DatabaseReference } from "firebase/database";
-import { MessageType } from "../type/message";
+import { MessageType } from "../type/chat";
 export const getDataOnce = async (url: string) => {
   const dbRef = ref(db);
   const response = await get(child(dbRef, url));
