@@ -1,22 +1,27 @@
 import axios from "axios";
+import { ref, set } from "firebase/database";
+import { db } from "../../../firebase";
 
-export const sendMessage = (data) => {
-  if (data.toUser) {
-    const { fromUser, toUser } = data;
-    const url = `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat/${fromUser}/${toUser}.json`;
-    const oppositeUrl = `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat/${toUser}/${fromUser}.json`;
+export const sendMessage = (data, target) => {
+  // 채팅 대상이 있을 경우 1:1채팅
+  if (target) {
+    const key = Object.keys(data)[0];
+    const { fromUser, toUser } = data[key];
+    const url = `/personal-chat/${fromUser}/${toUser}`;
+    const oppositeUrl = `/personal-chat/${toUser}/${fromUser}`;
 
     try {
-      axios.post(url, data);
-      axios.post(oppositeUrl, data);
+      set(ref(db, url), data);
+      set(ref(db, oppositeUrl), data);
     } catch (error) {
       console.log(error);
     }
     return;
   }
 
+  // 채팅 대상이 없을 경우 그룹채팅
   const { roomId } = data;
-  const url = `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${roomId}/messages.json`;
+  const url = `/group-chat/${roomId}/messages`;
   try {
     axios.post(url, data);
   } catch (error) {

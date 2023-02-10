@@ -65,8 +65,6 @@ export const getServerSideProps = async (context) => {
 
   const roomData = response.data;
 
-  console.log(roomData);
-
   const [members, messages] = [[], []];
 
   for (let key in roomData.members) {

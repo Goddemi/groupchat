@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import List from "../../../components/elements/List";
 
-const PersonalChatPage = (props) => {
+const PersonalChatList = (props) => {
   const router = useRouter();
   const path = router.asPath;
   const personalChatList = props.personalChatList;
@@ -30,7 +30,7 @@ const PersonalChatPage = (props) => {
   );
 };
 
-export default PersonalChatPage;
+export default PersonalChatList;
 
 export const getServerSideProps = async (context) => {
   const params = context.params.user;

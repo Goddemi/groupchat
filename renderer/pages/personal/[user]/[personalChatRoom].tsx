@@ -1,54 +1,24 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
-import { sendMessage } from "../../../components/chat/api/sendMessage";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
-import ChatInput from "../../../components/chat/chatElement/ChatInput";
-import { RootState } from "../../../store/store";
 import { GetServerSideProps } from "next";
-import { emailFormatter } from "../../../lib/emailFomatter";
+import { uuidv4 } from "@firebase/util";
+
+import ChatForm from "../../../components/chat/chatElement/ChatForm";
+import { getDataOnce, setData } from "../../../components/chat/api/firebaseApi";
 
 const PersonalChatRoomPage = (props) => {
-  const [target, chatData] = [props.target, props.personalChatContent];
-
-  const [newChatData, setNewChatData] = useState(chatData);
-
-  const user = useSelector((state: RootState) => state.login.loginUser);
-  const fromUser = emailFormatter(user);
-  const toUser = target;
-
-  const sendTime = new Date().getTime();
-
-  const [inputValue, setInputValue] = useState<string | undefined>("");
-
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!inputValue) {
-      return;
-    }
-
-    const data = {
-      fromUser,
-      toUser,
-      sendTime,
-      message: inputValue,
-    };
-    try {
-      await sendMessage(data);
-      setNewChatData([...newChatData, data]);
-      setInputValue("");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { roomId, fromUser, toUser, personalChatContent } = props;
 
   return (
     <div>
-      <span className="block text-center my-3">Chat with '{target}'</span>
-      <ChatContent chatData={newChatData} fromUser={fromUser} />
-      <form onSubmit={submitHandler} className="text-center">
-        <ChatInput inputValue={inputValue} setInputValue={setInputValue} />
-      </form>
+      <span className="block text-center my-3">Chat with '{toUser}'</span>
+      <ChatContent
+        roomId={roomId}
+        chatData={personalChatContent}
+        fromUser={fromUser}
+        toUser={toUser}
+      />
+      <ChatForm roomId={roomId} fromUser={fromUser} toUser={toUser} />
     </div>
   );
 };
@@ -59,15 +29,45 @@ export const getServerSideProps = async (context) => {
   const user = context.params.user.replace(".", "");
   const target = context.params?.personalChatRoom;
 
-  const response = await axios(
-    `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat/${user}/${target}.json`
-  );
-  const messages = response.data;
+  let roomId = user + target;
+  const oppositeRoomId = target + user;
+
+  const existedRoomCheck = async () => {
+    let response = await getDataOnce(`personal-chat/${roomId}`);
+
+    if (!response.exists()) {
+      response = await getDataOnce(`personal-chat/${oppositeRoomId}`);
+      roomId = oppositeRoomId;
+    }
+    return response;
+  };
+
+  const result = await existedRoomCheck();
+
+  if (!result.exists()) {
+    const key = uuidv4();
+
+    const makeChatRoom = async () => {
+      await setData(`personal-chat/${roomId}`, {});
+    };
+
+    const makeChatListToEachUser = async () => {
+      await setData(`personal-chat-list/${user}`, { [key]: target });
+      await setData(`personal-chat-list/${target}`, { [key]: user });
+    };
+
+    await makeChatRoom();
+    await makeChatListToEachUser();
+  }
+
+  const messages = result.val();
   const personalChatContent = [];
 
   for (let key in messages) {
     personalChatContent.push(messages[key]);
   }
 
-  return { props: { target, personalChatContent } };
+  return {
+    props: { roomId, fromUser: user, toUser: target, personalChatContent },
+  };
 };
