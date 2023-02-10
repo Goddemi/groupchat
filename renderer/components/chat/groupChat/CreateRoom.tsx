@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { emailFormatter } from "../../../lib/emailFomatter";
+import { addChatListToUser, makeNewChatRoom } from "../api/firebaseApi";
 
 const CreateRoom = ({ goToChatRoom, userWithDot }) => {
   const [createdRoomId, setCreatedRoomId] = useState("");
@@ -20,7 +21,14 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
     }
 
     const existedNameCheckResult = await roomIdExistedCheckHandler();
-    postNewGroupChat(existedNameCheckResult, createdRoomId);
+
+    if (!existedNameCheckResult) {
+      const data = { roomId: createdRoomId };
+      const content = { host: user };
+      await makeNewChatRoom(`group-chat/${createdRoomId}/members`, content);
+      await addChatListToUser(`group-chat-list/${user}`, data);
+      goToChatRoom(createdRoomId);
+    }
 
     return;
   };
@@ -38,25 +46,6 @@ const CreateRoom = ({ goToChatRoom, userWithDot }) => {
       }
     }
     return false;
-  };
-
-  const postNewGroupChat = async (existedNameCheckResult, createdRoomId) => {
-    const data = { roomId: createdRoomId };
-
-    if (!existedNameCheckResult) {
-      const postToGroupChatList = await axios.post(
-        `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat-list/${user}.json`,
-        data
-      );
-
-      const content = { host: user };
-      const postToGroupChatContent = await axios.post(
-        `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${createdRoomId}/members.json`,
-        content
-      );
-
-      goToChatRoom(createdRoomId);
-    }
   };
 
   return (

@@ -37,13 +37,14 @@ export const getServerSideProps = async (context) => {
   const user = params.replace(".", "");
 
   const response = await axios(
-    `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat/${user}.json`
+    `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat-list/${user}.json`
   );
 
   const personalChatList = [];
 
   for (let list in response.data) {
-    personalChatList.push(list);
+    const targetId = response.data[list].target;
+    personalChatList.push(targetId);
   }
 
   return { props: { personalChatList } };

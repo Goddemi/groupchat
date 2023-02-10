@@ -23,7 +23,7 @@ const ChatForm = ({ roomId, fromUser, toUser = "" }) => {
       if (toUser) {
         await pushData(`personal-chat/${roomId}`, data);
       } else {
-        await pushData(`group-chat/${roomId}`, data);
+        await pushData(`group-chat/${roomId}/messages`, data);
       }
       setInputValue("");
     } catch (error) {

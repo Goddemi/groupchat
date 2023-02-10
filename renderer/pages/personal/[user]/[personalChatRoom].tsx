@@ -1,11 +1,9 @@
-import axios from "axios";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
-import { GetServerSideProps } from "next";
-
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
 import {
+  addChatListToUser,
   getDataOnce,
-  pushData,
+  makeNewChatRoom,
 } from "../../../components/chat/api/firebaseApi";
 
 const PersonalChatRoomPage = (props) => {
@@ -33,7 +31,7 @@ export const getServerSideProps = async (context) => {
   let roomId = user + target;
   const oppositeRoomId = target + user;
 
-  const existedRoomCheck = async () => {
+  const existedRoomCheckAndGetData = async () => {
     let response = await getDataOnce(`personal-chat/${roomId}`);
 
     if (!response.exists()) {
@@ -43,20 +41,12 @@ export const getServerSideProps = async (context) => {
     return response;
   };
 
-  const result = await existedRoomCheck();
+  const result = await existedRoomCheckAndGetData();
 
   if (!result.exists()) {
-    const makeChatRoom = async () => {
-      await pushData(`personal-chat/${roomId}`, {});
-    };
-
-    const makeChatListToEachUser = async () => {
-      await pushData(`personal-chat-list/${user}`, { target: target });
-      await pushData(`personal-chat-list/${target}`, { target: user });
-    };
-
-    await makeChatRoom();
-    await makeChatListToEachUser();
+    await makeNewChatRoom(`personal-chat/${roomId}`);
+    await addChatListToUser(`personal-chat-list/${user}`, { target });
+    await addChatListToUser(`personal-chat-list/${target}`, { target: user });
   }
 
   const messages = result.val();

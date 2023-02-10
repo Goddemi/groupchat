@@ -3,16 +3,24 @@ import react, { useEffect, useState } from "react";
 import Message from "./Message";
 import { db } from "../../../firebase";
 import { ref } from "firebase/database";
-import { getDataLive } from "../api/firebaseApi";
+import { getLiveData } from "../api/firebaseApi";
 
 const ChatContent = ({ roomId, chatData, fromUser }) => {
   const [newChatData, setNewChatData] = useState(chatData);
 
-  const messagesRef = ref(db, `personal-chat/${roomId}`);
+  if (roomId.includes("@")) {
+    const messagesRef = ref(db, `personal-chat/${roomId}`);
 
-  useEffect(() => {
-    getDataLive(messagesRef, setNewChatData);
-  }, []);
+    useEffect(() => {
+      getLiveData(messagesRef, setNewChatData);
+    }, []);
+  } else {
+    const messagesRef = ref(db, `group-chat/${roomId}/messages`);
+
+    useEffect(() => {
+      getLiveData(messagesRef, setNewChatData);
+    }, []);
+  }
 
   return (
     <>
