@@ -1,13 +1,17 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import List from "../../../components/elements/List";
+import { GetServerSidePropsContext } from "next";
 
-const PersonalChatList = (props) => {
+interface Props {
+  personalChatList: string[];
+}
+
+const PersonalChatList = ({ personalChatList }: Props) => {
   const router = useRouter();
   const path = router.asPath;
-  const personalChatList = props.personalChatList;
 
-  const goToChatRoom = (targetUser) => {
+  const goToChatRoom = (targetUser: string) => {
     router.push(`${path}/${targetUser}`);
   };
 
@@ -32,9 +36,11 @@ const PersonalChatList = (props) => {
 
 export default PersonalChatList;
 
-export const getServerSideProps = async (context) => {
-  const params = context.params.user;
-  const user = params.replace(".", "");
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const params = context.params?.user;
+  const user = (params as string).replace(".", "");
 
   const response = await axios(
     `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat-list/${user}.json`

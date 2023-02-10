@@ -1,8 +1,14 @@
 import { useState } from "react";
+import { pushData } from "../../../lib/firebaseLib";
 import ChatInput from "./ChatInput";
-import { pushData } from "../api/firebaseApi";
 
-const ChatForm = ({ roomId, fromUser, toUser = "" }) => {
+interface Props {
+  roomId: string;
+  fromUser: string;
+  toUser?: string | null;
+}
+
+const ChatForm = ({ roomId, fromUser, toUser = "" }: Props) => {
   const sendTime = new Date().getTime();
   const [inputValue, setInputValue] = useState<string | undefined>("");
 

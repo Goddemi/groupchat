@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
-import { sendMessage } from "../../../components/chat/api/sendMessage";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
-import ChatInput from "../../../components/chat/chatElement/ChatInput";
-import { RootState } from "../../../store/store";
-import { GetServerSideProps } from "next";
-import { emailFormatter } from "../../../lib/emailFomatter";
 import InviteForm from "../../../components/chat/groupChat/invite/InviteForm";
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
+import { GetServerSidePropsContext } from "next";
+import { RoomDataType } from "../../../type/chat";
+import { MemberType } from "../../../type/chat";
+import { MessageType } from "../../../type/chat";
+interface Props {
+  fromUser: string;
+  roomId: string;
+  members: MemberType[];
+  messages: MessageType[];
+}
 
-const GroupChatRoomPage = (props) => {
-  const { fromUser, roomId, members, messages } = props;
-
+const GroupChatRoomPage = ({ fromUser, roomId, members, messages }: Props) => {
   return (
     <div>
       <span className="block text-center my-3">Chat in '{roomId}'</span>
@@ -25,15 +26,17 @@ const GroupChatRoomPage = (props) => {
 
 export default GroupChatRoomPage;
 
-export const getServerSideProps = async (context) => {
-  const user = context.params.user.replace(".", "");
-  const roomId = context.params.groupChatRoom;
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const user = (context.params?.user as string).replace(".", "");
+  const roomId = context.params?.groupChatRoom;
 
   const response = await axios(
     `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat/${roomId}.json`
   );
 
-  const roomData = response.data;
+  const roomData: RoomDataType = response.data;
 
   const [members, messages] = [[], []];
 
@@ -44,6 +47,8 @@ export const getServerSideProps = async (context) => {
   for (let key in roomData.messages) {
     messages.push(roomData.messages[key]);
   }
+
+  console.log(members, messages);
 
   return { props: { fromUser: user, roomId, members, messages } };
 };

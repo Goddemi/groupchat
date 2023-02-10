@@ -21,7 +21,6 @@ const List = ({ targetId }: { targetId: string }) => {
   }
 
   //그룹대화일 경우
-
   const path = `/group/${loginUser}/${target}`;
 
   return (

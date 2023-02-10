@@ -1,4 +1,8 @@
-const Message = ({ data }) => {
+import { MessageType } from "../../../type/chat";
+
+const Message = ({ data }: any) => {
+  console.log(data);
+
   const { fromUser, message, sendTime } = data;
 
   const originDate = new Date(sendTime);

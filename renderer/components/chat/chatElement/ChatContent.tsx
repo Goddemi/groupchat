@@ -3,9 +3,15 @@ import react, { useEffect, useState } from "react";
 import Message from "./Message";
 import { db } from "../../../firebase";
 import { ref } from "firebase/database";
-import { getLiveData } from "../api/firebaseApi";
+import { getLiveData } from "../../../lib/firebaseLib";
+import { MessageType } from "../../../type/message";
+interface Props {
+  roomId: string;
+  fromUser: string;
+  chatData: MessageType[];
+}
 
-const ChatContent = ({ roomId, chatData, fromUser }) => {
+const ChatContent = ({ roomId, fromUser, chatData }: Props) => {
   const [newChatData, setNewChatData] = useState(chatData);
 
   if (roomId.includes("@")) {
@@ -14,6 +20,7 @@ const ChatContent = ({ roomId, chatData, fromUser }) => {
     useEffect(() => {
       getLiveData(messagesRef, setNewChatData);
     }, []);
+    //
   } else {
     const messagesRef = ref(db, `group-chat/${roomId}/messages`);
 

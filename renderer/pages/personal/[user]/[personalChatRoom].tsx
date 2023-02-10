@@ -2,13 +2,24 @@ import ChatContent from "../../../components/chat/chatElement/ChatContent";
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
 import {
   addChatListToUser,
-  getDataOnce,
   makeNewChatRoom,
 } from "../../../components/chat/api/firebaseApi";
+import { getDataOnce } from "../../../lib/firebaseLib";
+import { GetServerSidePropsContext } from "next";
+import { MessageType } from "../../../type/message";
+interface Props {
+  roomId: string;
+  fromUser: string;
+  toUser: string | null;
+  personalChatContent: MessageType[];
+}
 
-const PersonalChatRoomPage = (props) => {
-  const { roomId, fromUser, toUser, personalChatContent } = props;
-
+const PersonalChatRoomPage = ({
+  roomId,
+  fromUser,
+  toUser,
+  personalChatContent,
+}: Props) => {
   return (
     <div>
       <span className="block text-center my-3">Chat with '{toUser}'</span>
@@ -24,8 +35,10 @@ const PersonalChatRoomPage = (props) => {
 
 export default PersonalChatRoomPage;
 
-export const getServerSideProps = async (context) => {
-  const user = context.params.user.replace(".", "");
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const user = (context.params?.user as string).replace(".", "");
   const target = context.params?.personalChatRoom;
 
   let roomId = user + target;

@@ -1,4 +1,8 @@
-const ChatInput = ({ inputValue, setInputValue }) => {
+interface Props {
+  inputValue: string | undefined;
+  setInputValue: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+const ChatInput = ({ inputValue, setInputValue }: Props) => {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };

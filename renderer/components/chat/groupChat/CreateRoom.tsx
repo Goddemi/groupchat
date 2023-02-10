@@ -3,7 +3,11 @@ import axios from "axios";
 import { emailFormatter } from "../../../lib/emailFomatter";
 import { addChatListToUser, makeNewChatRoom } from "../api/firebaseApi";
 
-const CreateRoom = ({ goToChatRoom, userWithDot }) => {
+interface Props {
+  goToChatRoom: (targetRoomId: string) => void;
+  userWithDot: string;
+}
+const CreateRoom = ({ goToChatRoom, userWithDot }: Props) => {
   const [createdRoomId, setCreatedRoomId] = useState("");
   const user = emailFormatter(userWithDot as string);
 

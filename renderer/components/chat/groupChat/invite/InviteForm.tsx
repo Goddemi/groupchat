@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { emailFormatter } from "../../../../lib/emailFomatter";
-import { getUserListWithArray } from "../../../auth/api/userList";
+import { getUserListWithArray } from "../../../userList/api/userList";
 import {
   postGroupChatRoomToInvitedPerson,
   postMemberListToRoomDatabase,
 } from "./api";
+import { MemberType } from "../../../../type/chat";
+interface Props {
+  roomId: string;
+  members: MemberType[];
+}
 
-const InviteForm = ({ roomId, members }) => {
-  const [invitePersonId, setInvitePersonId] = useState<string | undefined>("");
+const InviteForm = ({ roomId, members }: Props) => {
+  const [invitePersonId, setInvitePersonId] = useState<string>("");
   const [newMembers, setNewMembers] = useState(members);
 
   const inviteInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +23,10 @@ const InviteForm = ({ roomId, members }) => {
   const inviteHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (members.includes(invitePersonId)) {
+    const memberList = members.map((ele) => Object.values(ele)[0]);
+    const formattedId = emailFormatter(invitePersonId);
+
+    if (memberList.includes(formattedId)) {
       alert("중복 아이디 불가");
       return;
     }
@@ -30,7 +38,7 @@ const InviteForm = ({ roomId, members }) => {
     }
 
     const key = new Date().getTime();
-    const formattedId = emailFormatter(invitePersonId);
+
     const data = { [key]: formattedId };
 
     postMemberListToRoomDatabase(roomId, data);

@@ -1,6 +1,11 @@
 import List from "../../../components/elements/List";
 
-const GroupRoomList = ({ goToChatRoom, groupChatList }) => {
+interface Props {
+  goToChatRoom: (targetRoomId: string) => void;
+  groupChatList: string[];
+}
+
+const GroupRoomList = ({ goToChatRoom, groupChatList }: Props) => {
   return (
     <div className="my-7">
       <div className="my-3 text-center">대화중인 방 리스트</div>
