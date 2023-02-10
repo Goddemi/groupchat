@@ -8,48 +8,17 @@ import { RootState } from "../../../store/store";
 import { GetServerSideProps } from "next";
 import { emailFormatter } from "../../../lib/emailFomatter";
 import InviteForm from "../../../components/chat/groupChat/invite/InviteForm";
+import ChatForm from "../../../components/chat/chatElement/ChatForm";
 
 const GroupChatRoomPage = (props) => {
-  const { roomId, members, messages } = props;
-
-  const [newChatData, setNewChatData] = useState(messages);
-
-  const user = useSelector((state: RootState) => state.login.loginUser);
-  const fromUser = emailFormatter(user);
-
-  const sendTime = new Date().getTime();
-
-  const [inputValue, setInputValue] = useState<string | undefined>("");
-
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!inputValue) {
-      return;
-    }
-
-    const data = {
-      fromUser,
-      roomId,
-      sendTime,
-      message: inputValue,
-    };
-    try {
-      await sendMessage(data);
-      setNewChatData([...newChatData, data]);
-      setInputValue("");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { fromUser, roomId, members, messages } = props;
 
   return (
     <div>
       <span className="block text-center my-3">Chat in '{roomId}'</span>
       <InviteForm roomId={roomId} members={members} />
-      <ChatContent chatData={newChatData} fromUser={fromUser} />
-      <form onSubmit={submitHandler} className="text-center">
-        <ChatInput inputValue={inputValue} setInputValue={setInputValue} />
-      </form>
+      <ChatContent roomId={roomId} chatData={messages} fromUser={fromUser} />
+      <ChatForm roomId={roomId} fromUser={fromUser} />
     </div>
   );
 };
@@ -57,6 +26,7 @@ const GroupChatRoomPage = (props) => {
 export default GroupChatRoomPage;
 
 export const getServerSideProps = async (context) => {
+  const user = context.params.user.replace(".", "");
   const roomId = context.params.groupChatRoom;
 
   const response = await axios(
@@ -75,8 +45,5 @@ export const getServerSideProps = async (context) => {
     messages.push(roomData.messages[key]);
   }
 
-  return { props: { roomId, members, messages } };
+  return { props: { fromUser: user, roomId, members, messages } };
 };
-
-//저쪽에서 보낸건 실시간으로 어떻게 확인하지.
-//getData가 바뀔때마다 다시 요청하게 한다.

@@ -1,10 +1,12 @@
 import axios from "axios";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
 import { GetServerSideProps } from "next";
-import { uuidv4 } from "@firebase/util";
 
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
-import { getDataOnce, setData } from "../../../components/chat/api/firebaseApi";
+import {
+  getDataOnce,
+  pushData,
+} from "../../../components/chat/api/firebaseApi";
 
 const PersonalChatRoomPage = (props) => {
   const { roomId, fromUser, toUser, personalChatContent } = props;
@@ -16,7 +18,6 @@ const PersonalChatRoomPage = (props) => {
         roomId={roomId}
         chatData={personalChatContent}
         fromUser={fromUser}
-        toUser={toUser}
       />
       <ChatForm roomId={roomId} fromUser={fromUser} toUser={toUser} />
     </div>
@@ -45,15 +46,13 @@ export const getServerSideProps = async (context) => {
   const result = await existedRoomCheck();
 
   if (!result.exists()) {
-    const key = uuidv4();
-
     const makeChatRoom = async () => {
-      await setData(`personal-chat/${roomId}`, {});
+      await pushData(`personal-chat/${roomId}`, {});
     };
 
     const makeChatListToEachUser = async () => {
-      await setData(`personal-chat-list/${user}`, { [key]: target });
-      await setData(`personal-chat-list/${target}`, { [key]: user });
+      await pushData(`personal-chat-list/${user}`, { target: target });
+      await pushData(`personal-chat-list/${target}`, { target: user });
     };
 
     await makeChatRoom();

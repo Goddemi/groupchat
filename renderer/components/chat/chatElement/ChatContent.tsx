@@ -1,24 +1,17 @@
-import { onValue, ref } from "firebase/database";
-import { useEffect, useState } from "react";
-// import { getDataLive } from "../api/firebaseApi";
-import { getMessage } from "../api/getMessage";
+import react, { useEffect, useState } from "react";
+
 import Message from "./Message";
 import { db } from "../../../firebase";
+import { ref } from "firebase/database";
 import { getDataLive } from "../api/firebaseApi";
 
-const ChatContent = ({ roomId, chatData, fromUser, toUser }) => {
+const ChatContent = ({ roomId, chatData, fromUser }) => {
   const [newChatData, setNewChatData] = useState(chatData);
 
-  //object. valuse...
   const messagesRef = ref(db, `personal-chat/${roomId}`);
+
   useEffect(() => {
     getDataLive(messagesRef, setNewChatData);
-
-    // onValue(messagesRef, (snapshot) => {
-    //   const messagesData = snapshot.val();
-    //   const newMessage = Object.values(messagesData);
-    //   setNewChatData((prevMessages) => [...prevMessages, ...newMessage]);
-    // });
   }, []);
 
   return (

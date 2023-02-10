@@ -1,9 +1,8 @@
 import { useState } from "react";
 import ChatInput from "./ChatInput";
-import { uuidv4 } from "@firebase/util";
-import { setData } from "../api/firebaseApi";
+import { pushData } from "../api/firebaseApi";
 
-const ChatForm = ({ roomId, fromUser, toUser }) => {
+const ChatForm = ({ roomId, fromUser, toUser = "" }) => {
   const sendTime = new Date().getTime();
   const [inputValue, setInputValue] = useState<string | undefined>("");
 
@@ -12,18 +11,20 @@ const ChatForm = ({ roomId, fromUser, toUser }) => {
     if (!inputValue) {
       return;
     }
-    const key = uuidv4();
 
     const data = {
-      [key]: {
-        fromUser,
-        toUser,
-        sendTime,
-        message: inputValue,
-      },
+      fromUser,
+      toUser,
+      sendTime,
+      message: inputValue,
     };
+
     try {
-      await setData(`personal-chat/${roomId}`, data);
+      if (toUser) {
+        await pushData(`personal-chat/${roomId}`, data);
+      } else {
+        await pushData(`group-chat/${roomId}`, data);
+      }
       setInputValue("");
     } catch (error) {
       console.error(error);

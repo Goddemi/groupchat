@@ -1,11 +1,11 @@
-import { child, get, onValue, ref, set } from "firebase/database";
+import { child, get, onValue, push, ref, set } from "firebase/database";
 import { db } from "../../../firebase";
 
 export const getDataLive = (messageRef, setUpdateMethod) => {
   onValue(messageRef, (snapshot) => {
-    const messagesData = snapshot.val();
+    const messagesData = snapshot.val() || {};
     const newMessage = Object.values(messagesData);
-    setUpdateMethod((prevMessages) => [...prevMessages, ...newMessage]);
+    setUpdateMethod([...newMessage]);
   });
 };
 
@@ -15,7 +15,7 @@ export const getDataOnce = async (url: string) => {
   return response;
 };
 
-export const setData = async (url: string, data) => {
-  const response = await set(ref(db, url), data);
+export const pushData = async (url: string, data) => {
+  const response = await push(ref(db, url), data);
   return response;
 };
