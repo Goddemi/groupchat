@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div>
+      <div className="font-sans">
         {loginUser && <Nav />}
         <div className="px-8">{children}</div>
       </div>

@@ -2,8 +2,7 @@ import axios from "axios";
 import { USER_CONFIG } from "../../../config/config";
 
 export const getUserListWithArray = async () => {
-  const response = await axios(USER_CONFIG);
-  const data = response.data;
+  const { data } = await axios(USER_CONFIG);
 
   let userArrayList: string[] = [];
 

@@ -13,7 +13,7 @@ const UserListPage = ({ userArrayList }: Props) => {
   const loginUser = useSelector((state: RootState) => state.login.loginUser);
   const userListExceptMe = userArrayList.filter((ele) => ele !== loginUser);
 
-  let filteredList = userListExceptMe;
+  let filteredList: string[] = userListExceptMe;
 
   const [searchUser, setSearchUser] = useState<string | undefined>();
 
@@ -40,7 +40,11 @@ const UserListPage = ({ userArrayList }: Props) => {
 export default UserListPage;
 
 export async function getServerSideProps() {
-  const data = await getUserListWithArray();
-
-  return { props: { userArrayList: data } };
+  try {
+    const data = await getUserListWithArray();
+    return { props: { userArrayList: data } };
+  } catch (error) {
+    console.error(error);
+    return { props: { userArrayList: [] } };
+  }
 }

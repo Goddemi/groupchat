@@ -38,7 +38,8 @@ export const getServerSideProps = async (
 
   const roomData: RoomDataType = response.data;
 
-  const [members, messages] = [[], []];
+  const members: any[] = [];
+  const messages: any[] = [];
 
   for (let key in roomData.members) {
     members.push(roomData.members[key]);

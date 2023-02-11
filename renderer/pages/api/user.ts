@@ -1,8 +1,7 @@
-import { getUserListWithArray } from "./../../components/auth/api/userList";
+import { getUserListWithArray } from "../../components/userList/api/userList";
 import { postUserList } from "../../components/auth/api/userList";
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import { USER_CONFIG } from "../../config/config";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,

@@ -24,6 +24,11 @@ const CreateRoom = ({ goToChatRoom, userWithDot }: Props) => {
       return;
     }
 
+    if (createdRoomId.includes("@")) {
+      alert("@문자는 제목에 포함될 수 없습니다.");
+      return;
+    }
+
     const existedNameCheckResult = await roomIdExistedCheckHandler();
 
     if (!existedNameCheckResult) {

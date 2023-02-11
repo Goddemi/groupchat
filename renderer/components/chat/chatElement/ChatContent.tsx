@@ -4,7 +4,7 @@ import Message from "./Message";
 import { db } from "../../../firebase";
 import { ref } from "firebase/database";
 import { getLiveData } from "../../../lib/firebaseLib";
-import { MessageType } from "../../../type/message";
+import { MessageType } from "../../../type/chat";
 interface Props {
   roomId: string;
   fromUser: string;

@@ -40,18 +40,30 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const params = context.params?.user;
-  const user = (params as string).replace(".", "");
 
-  const response = await axios(
-    `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat-list/${user}.json`
-  );
-
-  const personalChatList = [];
-
-  for (let list in response.data) {
-    const targetId = response.data[list].target;
-    personalChatList.push(targetId);
+  if (!params) {
+    return {
+      props: { personalChatList: [] },
+    };
   }
 
-  return { props: { personalChatList } };
+  const user = (params as string).replace(".", "");
+  try {
+    const response = await axios(
+      `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/personal-chat-list/${user}.json`
+    );
+
+    const personalChatList = [];
+
+    for (let list in response.data) {
+      const targetId = response.data[list].target;
+      personalChatList.push(targetId);
+    }
+    return { props: { personalChatList } };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: { personalChatList: [] },
+    };
+  }
 };
