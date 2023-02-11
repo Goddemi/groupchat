@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import List from "../../../components/elements/List";
-import { GetServerSidePropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 
 interface Props {
   personalChatList: string[];
@@ -36,9 +36,7 @@ const PersonalChatList = ({ personalChatList }: Props) => {
 
 export default PersonalChatList;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const params = context.params?.user;
 
   if (!params) {

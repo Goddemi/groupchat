@@ -5,7 +5,7 @@ import {
   makeNewChatRoom,
 } from "../../../components/chat/api/firebaseApi";
 import { getDataOnce } from "../../../lib/firebaseLib";
-import { GetServerSidePropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 import { MessageType } from "../../../type/chat";
 interface Props {
   roomId: string;
@@ -35,9 +35,7 @@ const PersonalChatRoomPage = ({
 
 export default PersonalChatRoomPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const user = (context.params?.user as string).replace(".", "");
   const target = context.params?.personalChatRoom;
 

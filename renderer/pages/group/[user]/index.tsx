@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import CreateRoom from "../../../components/chat/groupChat/CreateRoom";
 import GroupRoomList from "../../../components/chat/groupChat/GroupRoomList";
-import { GetServerSidePropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 
 interface Props {
   groupChatList: string[];
@@ -30,9 +30,7 @@ const GroupChatPage = ({ groupChatList }: Props) => {
 
 export default GroupChatPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const params = context.params?.user;
   const user = (params as string).replace(".", "");
 

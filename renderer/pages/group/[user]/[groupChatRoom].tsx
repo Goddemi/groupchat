@@ -2,10 +2,11 @@ import axios from "axios";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
 import InviteForm from "../../../components/chat/groupChat/invite/InviteForm";
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
-import { GetServerSidePropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 import { RoomDataType } from "../../../type/chat";
 import { MemberType } from "../../../type/chat";
 import { MessageType } from "../../../type/chat";
+
 interface Props {
   fromUser: string;
   roomId: string;
@@ -26,9 +27,7 @@ const GroupChatRoomPage = ({ fromUser, roomId, members, messages }: Props) => {
 
 export default GroupChatRoomPage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const user = (context.params?.user as string).replace(".", "");
   const roomId = context.params?.groupChatRoom;
 
