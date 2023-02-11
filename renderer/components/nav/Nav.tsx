@@ -8,7 +8,7 @@ const Nav = ({ setMenuState }: any) => {
   return (
     <div className="flex justify-center">
       <div className="my-2 p-3 border border-black border-solid cursor-pointer">
-        <Link href={"/home"}>UserList</Link>
+        <Link href={"/userList"}>UserList</Link>
       </div>
       <div className="mx-1 my-2 p-3 border border-black border-solid cursor-pointer">
         <Link href={`/personal/${loginUser}`}>1:1 Chat</Link>

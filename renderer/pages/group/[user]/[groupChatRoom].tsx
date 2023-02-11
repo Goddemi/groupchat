@@ -48,7 +48,5 @@ export const getServerSideProps = async (
     messages.push(roomData.messages[key]);
   }
 
-  console.log(members, messages);
-
   return { props: { fromUser: user, roomId, members, messages } };
 };

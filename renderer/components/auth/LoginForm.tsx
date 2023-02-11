@@ -4,13 +4,14 @@ import InputForm from "./formElement/InputForm";
 import Notification from "../notification/Notification";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../../store/auth/loginUser";
-import axios from "axios";
+import { useRouter } from "next/router";
 interface Props {
   goToSignup: () => void;
 }
 
 const LoginForm = ({ goToSignup }: Props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,6 +30,7 @@ const LoginForm = ({ goToSignup }: Props) => {
     setLoginRequestResult(message);
 
     message === "로그인 성공" && dispatch(setLoginUser(userEmail));
+    message === "로그인 성공" && router.push("/userList");
   };
 
   return (

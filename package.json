@@ -16,7 +16,8 @@
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "firebase": "^9.17.0",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

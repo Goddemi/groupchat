@@ -1,31 +1,15 @@
 import Head from "next/head";
-import { useSelector } from "react-redux";
-import UserList from "../components/userList/UserList";
-import { getUserListWithArray } from "../components/userList/api/userList";
-import { RootState } from "../store/store";
+import AuthForm from "../components/auth/AuthForm";
 
-interface Props {
-  userArrayList: string[];
-}
-
-function Home({ userArrayList }: Props) {
-  const loginUser = useSelector((state: RootState) => state.login.loginUser);
-  const userListExceptMe = userArrayList.filter((ele) => ele !== loginUser);
-
+function Home() {
   return (
     <>
       <Head>
         <title>Chat application with Nextron</title>
       </Head>
-      <UserList userArrayList={userListExceptMe} />
+      <AuthForm />
     </>
   );
 }
 
 export default Home;
-
-export async function getServerSideProps() {
-  const data = await getUserListWithArray();
-
-  return { props: { userArrayList: data } };
-}

@@ -1,21 +1,25 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import AuthForm from "../auth/AuthForm";
 import Nav from "../nav/Nav";
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const loginUser = useSelector((state: RootState) => state.login.loginUser);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loginUser && router.pathname !== "/home") {
+      router.push("/home");
+    }
+  }, []);
 
   return (
     <>
-      {loginUser ? (
-        <div>
-          <Nav />
-          <div className="px-8">{children}</div>
-        </div>
-      ) : (
-        <AuthForm />
-      )}
+      <div>
+        {loginUser && <Nav />}
+        <div className="px-8">{children}</div>
+      </div>
     </>
   );
 };

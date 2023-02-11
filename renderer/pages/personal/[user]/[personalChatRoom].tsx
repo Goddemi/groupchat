@@ -56,6 +56,7 @@ export const getServerSideProps = async (
 
   const result = await existedRoomCheckAndGetData();
 
+  //존재하지 않으면 만드는데 존재 하지 않는다고 위에서 체크한 것. result를 확인.
   if (!result.exists()) {
     await makeNewChatRoom(`personal-chat/${roomId}`);
     await addChatListToUser(`personal-chat-list/${user}`, { target });
