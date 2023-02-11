@@ -43,6 +43,8 @@ const CreateRoom = ({ goToChatRoom, userWithDot }: Props) => {
   };
 
   const roomIdExistedCheckHandler = async () => {
+    let existedResult = false;
+
     const getResult = await axios(
       `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat-list/${user}.json`
     );
@@ -51,10 +53,10 @@ const CreateRoom = ({ goToChatRoom, userWithDot }: Props) => {
     for (let key in existedData) {
       if (existedData[key].roomId === createdRoomId) {
         alert("동일한 방 이름이 있습니다.");
-        return true;
+        existedResult = true;
       }
     }
-    return false;
+    return existedResult;
   };
 
   return (
