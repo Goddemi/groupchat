@@ -1,5 +1,4 @@
 import react, { useEffect, useState } from "react";
-
 import Message from "./Message";
 import { db } from "../../../firebase";
 import { ref } from "firebase/database";
@@ -20,7 +19,6 @@ const ChatContent = ({ roomId, fromUser, chatData }: Props) => {
     useEffect(() => {
       getLiveData(messagesRef, setNewChatData);
     }, []);
-    //
   } else {
     const messagesRef = ref(db, `group-chat/${roomId}/messages`);
 

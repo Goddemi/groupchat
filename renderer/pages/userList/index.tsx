@@ -11,7 +11,7 @@ interface Props {
 
 const UserListPage = ({ userArrayList }: Props) => {
   const loginUser = useSelector((state: RootState) => state.login.loginUser);
-  const userListExceptMe = userArrayList.filter((ele) => ele !== loginUser);
+  const userListExceptMe = userArrayList.filter((user) => user !== loginUser);
 
   let filteredList: string[] = userListExceptMe;
 

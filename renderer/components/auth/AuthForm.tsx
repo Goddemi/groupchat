@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { auth } from "./api/auth";
 import GoBackButton from "./formElement/GoBackButton";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
