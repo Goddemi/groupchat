@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { getChatList } from "../../../components/chat/api/getChatList";
 import CreateRoom from "../../../components/chat/groupChat/CreateRoom";
 import GroupRoomList from "../../../components/chat/groupChat/GroupRoomList";
-import { getChatList } from "../../../components/chat/api/firebaseApi";
 
 const GroupChatPage = () => {
   const router = useRouter();

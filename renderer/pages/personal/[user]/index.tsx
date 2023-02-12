@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { getChatList } from "../../../components/chat/api/getChatList";
 import List from "../../../components/elements/List";
-import { getChatList } from "../../../components/chat/api/firebaseApi";
-
-interface Props {
-  personalChatList: string[];
-}
 
 const PersonalChatList = () => {
   const router = useRouter();
@@ -15,14 +11,16 @@ const PersonalChatList = () => {
   const [personalChatList, setPersonalChatList] = useState<
     string[] | undefined
   >([]);
-
-  const getPersonalChatListHandler = async () => {
+  console.log(personalChatList);
+  const getChatListHandler = async () => {
+    console.log(user);
     const response = await getChatList("personal", user);
+    console.log(response);
     setPersonalChatList(response);
   };
 
   useEffect(() => {
-    getPersonalChatListHandler();
+    getChatListHandler();
   }, []);
 
   const goToChatRoom = (targetUser: string) => {
@@ -36,7 +34,7 @@ const PersonalChatList = () => {
   return (
     <div>
       <div className="my-3 text-center">대화중인 방 리스트</div>
-      {personalChatList?.map((targetUser) => {
+      {personalChatList.map((targetUser) => {
         return (
           <div
             key={targetUser}

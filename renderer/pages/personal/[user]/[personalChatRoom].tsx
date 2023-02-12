@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChatContent from "../../../components/chat/chatElement/ChatContent";
 import ChatForm from "../../../components/chat/chatElement/ChatForm";
-import { getPersonalChatData } from "../../../components/chat/personalChat/api";
+import { getPersonalChatData } from "../../../components/chat/personalChat/api/getPersonalChatData";
 import {
   addChatListToUser,
   makeNewChatRoom,
@@ -18,7 +18,6 @@ interface PersonalDataType {
 
 const PersonalChatRoomPage = () => {
   const router = useRouter();
-
   const user = router.query.user;
   const target = router.query.personalChatRoom;
 
@@ -32,6 +31,7 @@ const PersonalChatRoomPage = () => {
       target as string
     );
 
+    //방이 없다면 새로만듦
     if (!result.exists()) {
       await makeNewChatRoom(`personal-chat/${roomId}`);
       await addChatListToUser(`personal-chat-list${user}`, { target });

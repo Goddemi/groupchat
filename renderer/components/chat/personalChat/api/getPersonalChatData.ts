@@ -1,4 +1,4 @@
-import { getDataOnce } from "../../../lib/firebaseLib";
+import { getDataOnce } from "../../../../lib/firebaseLib";
 
 export const getPersonalChatData = async (
   userWithDot: string,
