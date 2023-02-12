@@ -1,4 +1,3 @@
-import { getUserListWithArray } from "../../components/userList/api/userList";
 import { postUserList } from "../../components/auth/api/userList";
 import { USERLIST_CONFIG } from "../../config/config";
 import type { NextApiRequest, NextApiResponse } from "next";
