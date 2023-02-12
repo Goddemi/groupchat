@@ -18,8 +18,8 @@ interface PersonalDataType {
 
 const PersonalChatRoomPage = () => {
   const router = useRouter();
-  const user = router.query.user;
-  const target = router.query.personalChatRoom;
+  const user = (router.query.user as string).replace(".", "");
+  const target = (router.query.personalChatRoom as string).replace(".", "");
 
   const [personalChatData, setPerSonalChatData] = useState<
     PersonalDataType | undefined
@@ -34,8 +34,8 @@ const PersonalChatRoomPage = () => {
     //방이 없다면 새로만듦
     if (!result.exists()) {
       await makeNewChatRoom(`personal-chat/${roomId}`);
-      await addChatListToUser(`personal-chat-list${user}`, { target });
-      await addChatListToUser(`personal-chat-list${target}`, { target: user });
+      await addChatListToUser(`personal-chat-list/${user}`, { target });
+      await addChatListToUser(`personal-chat-list/${target}`, { target: user });
     }
 
     const messages = result.val();

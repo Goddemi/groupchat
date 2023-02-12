@@ -25,7 +25,7 @@ const GroupChatRoomPage = () => {
   >();
 
   const groupChatDataHandler = async () => {
-    const { members, messages } = await getGroupChatData(user, roomId);
+    const { members, messages } = await getGroupChatData(roomId);
     const data = { fromUser: user, roomId, members, messages };
     setGroupChatData(data);
   };

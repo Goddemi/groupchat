@@ -11,9 +11,8 @@ const PersonalChatList = () => {
   const [personalChatList, setPersonalChatList] = useState<
     string[] | undefined
   >([]);
-  console.log(personalChatList);
+
   const getChatListHandler = async () => {
-    console.log(user);
     const response = await getChatList("personal", user);
     console.log(response);
     setPersonalChatList(response);

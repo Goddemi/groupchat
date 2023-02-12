@@ -2,7 +2,7 @@ import axios from "axios";
 import { GROUPCHATDATA_CONFIG } from "../../../../config/config";
 import { RoomDataType } from "../../../../type/chat";
 
-export const getGroupChatData = async (userWithDot: string, roomId: string) => {
+export const getGroupChatData = async (roomId: string) => {
   const response = await axios(GROUPCHATDATA_CONFIG(roomId));
   const roomData: RoomDataType = response.data;
 
