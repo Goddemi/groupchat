@@ -1,21 +1,32 @@
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import CreateRoom from "../../../components/chat/groupChat/CreateRoom";
 import GroupRoomList from "../../../components/chat/groupChat/GroupRoomList";
-import { GetStaticPropsContext } from "next";
+import { getChatList } from "../../../components/chat/api/firebaseApi";
 
-interface Props {
-  groupChatList: string[];
-}
-
-const GroupChatPage = ({ groupChatList }: Props) => {
+const GroupChatPage = () => {
   const router = useRouter();
   const userWithDot = router.query.user as string;
   const path = router.asPath;
 
+  const [groupChatList, setGroupChatList] = useState<string[] | undefined>([]);
+
+  const getChatListHandler = async () => {
+    const response = await getChatList("group", userWithDot);
+    setGroupChatList(response);
+  };
+
+  useEffect(() => {
+    getChatListHandler();
+  }, []);
+
   const goToChatRoom = (targetRoomId: string) => {
     router.push(`${path}/${targetRoomId}`);
   };
+
+  if (!groupChatList) {
+    return <div>로딩 중</div>;
+  }
 
   return (
     <div>
@@ -29,21 +40,3 @@ const GroupChatPage = ({ groupChatList }: Props) => {
 };
 
 export default GroupChatPage;
-
-export const getServerSideProps = async (context: GetStaticPropsContext) => {
-  const params = context.params?.user;
-  const user = (params as string).replace(".", "");
-
-  const response = await axios(
-    `https://nextron-chat-a24da-default-rtdb.asia-southeast1.firebasedatabase.app/group-chat-list/${user}.json`
-  );
-  const result = response.data;
-
-  const groupChatList = [];
-
-  for (let key in result) {
-    groupChatList.push(result[key].roomId);
-  }
-
-  return { props: { groupChatList } };
-};
