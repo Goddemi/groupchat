@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import List from "../../components/elements/List";
 import SearchUser from "../../components/userList/search/SearchUser";
 import { getUserListWithArray } from "../../components/userList/api/userList";
 import { RootState } from "../../store/store";
 
-interface Props {
-  userArrayList: string[];
-}
+const UserListPage = () => {
+  const [userList, setUserList] = useState<string[] | undefined>([]);
 
-const UserListPage = ({ userArrayList }: Props) => {
+  const getUserListHandler = async () => {
+    const response = await getUserListWithArray();
+    setUserList(response);
+  };
+
+  useEffect(() => {
+    getUserListHandler();
+  }, []);
+
+  if (!userList) {
+    return <div>로딩 중</div>;
+  }
+
   const loginUser = useSelector((state: RootState) => state.login.loginUser);
-  const userListExceptMe = userArrayList.filter((user) => user !== loginUser);
+  const userListExceptMe = userList.filter((user) => user !== loginUser);
 
   let filteredList: string[] = userListExceptMe;
 
@@ -28,7 +39,7 @@ const UserListPage = ({ userArrayList }: Props) => {
       <div className="p-5 border border-black border-solid">
         <SearchUser setSearchUser={setSearchUser} />
         <ul>
-          {filteredList.map((user) => {
+          {filteredList?.map((user) => {
             return <List targetId={user} key={user} />;
           })}
         </ul>
@@ -38,13 +49,3 @@ const UserListPage = ({ userArrayList }: Props) => {
 };
 
 export default UserListPage;
-
-export async function getServerSideProps() {
-  try {
-    const data = await getUserListWithArray();
-    return { props: { userArrayList: data } };
-  } catch (error) {
-    console.error(error);
-    return { props: { userArrayList: [] } };
-  }
-}

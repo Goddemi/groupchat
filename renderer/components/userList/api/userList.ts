@@ -1,14 +1,16 @@
 import axios from "axios";
-import { USER_CONFIG } from "../../../config/config";
+import { USERLIST_CONFIG } from "../../../config/config";
 
-export const getUserListWithArray = async () => {
-  const { data } = await axios(USER_CONFIG);
-
-  let userArrayList: string[] = [];
-
-  for (let key in data) {
-    userArrayList = [...userArrayList, data[key].userEmail];
+export async function getUserListWithArray() {
+  try {
+    const { data } = await axios(USERLIST_CONFIG);
+    let userArrayList: string[] = [];
+    for (let key in data) {
+      userArrayList = [...userArrayList, data[key].userEmail];
+    }
+    return userArrayList;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
-
-  return userArrayList;
-};
+}
