@@ -3,6 +3,10 @@
 ### use it
 
 ```
+
+$ yarn install (or npm install)
+
+
 # development mode
 $ yarn dev (or `npm run dev` or `pnpm run dev`)
 
