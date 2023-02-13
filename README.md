@@ -44,6 +44,4 @@ $ yarn build:all
 
 ### review
 
-```
-[blog](https://goddemi.tistory.com/120)
-```
+[blogLink(https://goddemi.tistory.com/120)](https://goddemi.tistory.com/120)
