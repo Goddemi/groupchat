@@ -18,13 +18,13 @@ const PersonalChatList = () => {
     setPersonalChatList(response);
   };
 
-  useEffect(() => {
-    getChatListHandler();
-  }, []);
-
   const goToChatRoom = (targetUser: string) => {
     router.push(`${path}/${targetUser}`);
   };
+
+  useEffect(() => {
+    getChatListHandler();
+  }, []);
 
   if (!personalChatList) {
     return <div> 로딩 중</div>;

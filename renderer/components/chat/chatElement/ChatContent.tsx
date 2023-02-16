@@ -13,15 +13,16 @@ interface Props {
 const ChatContent = ({ roomId, fromUser, chatData }: Props) => {
   const [newChatData, setNewChatData] = useState(chatData);
 
+  //개인채팅일 경우 roomId에 @존재
   if (roomId.includes("@")) {
     const messagesRef = ref(db, `personal-chat/${roomId}`);
-
     useEffect(() => {
       getLiveData(messagesRef, setNewChatData);
     }, []);
-  } else {
+  }
+  //그룹채팅일 경우
+  else {
     const messagesRef = ref(db, `group-chat/${roomId}/messages`);
-
     useEffect(() => {
       getLiveData(messagesRef, setNewChatData);
     }, []);

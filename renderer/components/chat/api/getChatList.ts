@@ -21,15 +21,14 @@ export const getChatList = async (
     if (type === "personal") {
       response = await axios(PERSONALCHATLIST_CONFIG(user));
       const result = response.data;
-
       for (let list in result) {
         chatList.push(result[list].target);
       }
     }
+
     if (type === "group") {
       response = await axios(GROUPCHATLIST_CONFIG(user));
       const result = response.data;
-
       for (let list in result) {
         chatList.push(result[list].roomId);
       }
